@@ -1,1 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rive Preview</title>
+  <script src="https://unpkg.com/@rive-app/canvas@2.9.1/rive.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background-color: #121212;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: sans-serif;
+    }
+    canvas {
+      border: 1px solid #444;
+      margin-top: 20px;
+    }
+    input {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Upload a .riv file to preview it</h2>
+  <input type="file" id="fileInput" accept=".riv" />
+  <canvas id="riveCanvas" width="800" height="600"></canvas>
+
+  <script>
+    const canvas = document.getElementById('riveCanvas');
+    const input = document.getElementById('fileInput');
+
+    input.addEventListener('change', async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const buffer = await file.arrayBuffer();
+
+      new rive.Rive({
+        buffer,
+        canvas,
+        autoplay: true,
+        animations: "*"
+      });
+    });
+  </script>
+</body>
+</html>
 
