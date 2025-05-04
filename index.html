@@ -3,48 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <title>Rive Preview</title>
-  <script src="https://unpkg.com/@rive-app/webgl"></script>
-  <style>
-    body {
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: #121212;
-      color: white;
-      font-family: sans-serif;
-    }
-    canvas {
-      margin-top: 20px;
-      border: 1px solid #444;
-    }
-    input {
-      margin-top: 20px;
-    }
-  </style>
-</head>
-<body>
-  <h2>Upload a .riv file to preview it</h2>
-  <input type="file" id="fileInput" accept=".riv" />
-  <canvas id="riveCanvas" width="800" height="600"></canvas>
+  <script type="module">
+    import Rive from 'https://cdn.skypack.dev/rive-wasm';
 
-  <script>
-    const canvas = document.getElementById('riveCanvas');
-    const fileInput = document.getElementById('fileInput');
+    const canvas = document.createElement('canvas');
+    canvas.width = 800;
+    canvas.height = 600;
+    document.body.appendChild(canvas);
 
-    fileInput.addEventListener('change', async (event) => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.riv';
+    input.style.marginTop = '20px';
+    document.body.appendChild(input);
+
+    const label = document.createElement('h2');
+    label.textContent = 'Upload a .riv file to preview it';
+    document.body.insertBefore(label, input);
+
+    input.addEventListener('change', async (event) => {
       const file = event.target.files[0];
       if (!file) return;
 
       const buffer = await file.arrayBuffer();
 
-      new rive.Rive({
-        buffer,
+      const rive = await Rive.new({
         canvas,
-        autoplay: true,
-        animations: '*',
+        buffer,
+        autoplay: true
       });
     });
   </script>
+  <style>
+    body {
+      margin: 0;
+      background-color: #121212;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: sans-serif;
+    }
+    canvas {
+      border: 1px solid #444;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
 </body>
 </html>
